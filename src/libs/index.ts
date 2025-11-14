@@ -64,7 +64,7 @@ export const JOIN_US_DATA = [
         id: 5,
         img: Certpng,
         title: "✅ Certificate of Completion",
-        subheader: "You’re Not Alone.",
+        subheader: "Prove What You Know.",
         text: "Complete the course and get a certificate that shows off your skills. Add it to your LinkedIn, portfolio, or resume to attract new opportunities."
 
     },
@@ -149,12 +149,7 @@ export const FAQ_DATA = [
         answer:
             "We occasionally offer mentorship and live sessions. Join the waitlist to stay updated.",
     },
-    {
-        id: 5,
-        question: "Will I learn how to make money with crypto?",
-        answer:
-            "We get it. That's wahy we offer affordable pricing, flexible payment plans, and occasional scholarships.",
-    },
+    
 ];
 
 export const TESTIMONIALS_DATA = [
