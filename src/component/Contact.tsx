@@ -29,7 +29,7 @@ const ContactUs: React.FC = () => {
       {/* Email */}
       <p className="mt-3 text-gray-700 text-sm flex items-center justify-center gap-1 font-poppins">
         <Mail size={16} />
-        Email us directly: <span className="font-medium">support@tideacademy.trade</span>
+        Email us directly: <span className="font-medium">support@tideacademy.tech</span>
       </p>
 
       {/* Response Time */}
