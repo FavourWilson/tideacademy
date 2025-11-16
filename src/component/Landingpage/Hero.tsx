@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { Heropng } from "../assets";
+import { Heropng } from "../../assets";
 
 const Hero = () => {
   return (
@@ -16,7 +16,7 @@ const Hero = () => {
 
         <p className="text-lg text-gray-600 leading-relaxed font-poppins">
           🚀 Join <span className="font-semibold text-gray-800">500+ learners</span>  
-          transforming their finances through expert-led training and practical guidance.
+           {" "}transforming their finances through expert-led training and practical guidance.
         </p>
 
         <Link

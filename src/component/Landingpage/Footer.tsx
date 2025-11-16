@@ -1,5 +1,5 @@
 import { FaFacebookF, FaInstagram, FaYoutube } from "react-icons/fa";
-import { Logodark } from "../assets";
+import { Logodark } from "../../assets";
 
 const Footer = () => {
   return (

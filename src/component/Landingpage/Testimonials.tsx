@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { TESTIMONIALS_DATA } from "../libs";
+import { TESTIMONIALS_DATA } from "../../libs";
 
 
 

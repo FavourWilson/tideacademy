@@ -1,4 +1,4 @@
-import { Course_DATA } from "../libs"
+import { Course_DATA } from "../../libs"
 
 const Courses = () => {
   return (

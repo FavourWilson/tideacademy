@@ -1,4 +1,4 @@
-import { JOIN_US_DATA } from "../libs";
+import { JOIN_US_DATA } from "../../libs";
 
 const JoinUs = () => {
   return (

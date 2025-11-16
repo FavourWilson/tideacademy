@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FAQ_DATA } from "../libs";
+import { FAQ_DATA } from "../../libs";
 
 const Faq = () => {
     const [openId, setOpenId] = useState<number | null>(1);
