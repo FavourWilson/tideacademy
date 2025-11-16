@@ -1,32 +1,23 @@
-import ContactUs from "./component/Contact"
-import Courses from "./component/Courses"
-import Faq from "./component/Faq"
-import Footer from "./component/Footer"
-import Hero from "./component/Hero"
-import JoinUs from "./component/JoinUs"
-import Layout from "./component/Layout"
-import Learn from "./component/Learn"
-import Navbar from "./component/Navbar"
-import TestimonialSlider from "./component/Testimonials"
+import { Route, Routes } from "react-router"
+import Homepage from "./component/Landingpage"
+import AuthLayout from "./component/auth/AuthLayout"
+import SignUp from "./component/auth/SignUp"
+import OTP from "./component/auth/OTP"
+import Signin from "./component/auth/Signin"
+
 
 
 function App() {
 
   return (
-    <>
-    <Layout>
-      <Navbar/>
-      <Hero/>
-      <Learn/>
-      <JoinUs/>
-      <Courses/>
-      <Faq/>
-      <TestimonialSlider/>
-      <ContactUs/>
-      
-    </Layout>
-    <Footer/>
-    </>
+   <Routes>
+      <Route index element={<Homepage/>}/>
+      <Route path="/sign-in" element={<Signin/>}/>
+      <Route element={<AuthLayout/>}>
+         <Route path="sign-up" element={<SignUp/>} />
+         <Route path="otp" element={<OTP/>}/>
+      </Route>
+   </Routes>
   )
 }
 

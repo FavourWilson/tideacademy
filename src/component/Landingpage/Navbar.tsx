@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import { Logo } from '../assets'
+import { Logo } from '../../assets'
 import { NavLink } from 'react-router'
 import { Menu } from 'lucide-react'
-import { NAV_LINK } from '../libs'
+import { NAV_LINK } from '../../libs'
 
 const Navbar = () => {
     const [open, setOpen] = useState(false)
@@ -26,7 +26,7 @@ const Navbar = () => {
         </div>
 
         <div className='hidden lg:flex'>
-            <NavLink to={''} className={'rounded-tl-xl rounded-br-xl bg-primary-100 font-bold font-poppins w-40 text-center py-3 px-2'}>Get Started</NavLink>
+            <NavLink to={'/sign-in'} className={'rounded-tl-xl rounded-br-xl bg-primary-100 font-bold font-poppins w-40 text-center py-3 px-2'}>Get Started</NavLink>
         </div>
         <div className='flex lg:hidden'>
             <Menu size={24} className='' onClick={handleNav} />

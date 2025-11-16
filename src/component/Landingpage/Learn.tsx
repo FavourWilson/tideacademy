@@ -1,4 +1,4 @@
-import { LEARN_DATA } from "../libs";
+import { LEARN_DATA } from "../../libs";
 
 const Learn = () => {
   return (
