@@ -1,16 +1,21 @@
-import { NavLink } from "react-router"
+import { NavLink, useNavigate } from "react-router"
 import Input from "../Input"
 import Sidebar from "./Sidebar"
 import { useState } from "react"
 import { Logo } from "../../assets"
 
 const SignUp = () => {
+  const navigate = useNavigate()
   const [email,setEmail] = useState("")
   const [name,setName] = useState("")
   const [phone,setPhone] = useState("")
   const [dob, setDob] = useState("")
   const [password,setPassword] = useState("")
   const [cpassword, setCpassword] = useState("")
+
+  const handleSignUp =()=>{
+    navigate('/otp')
+  }
   return (
     <div className="w-full flex gap-20">
       <Sidebar />
@@ -38,11 +43,11 @@ const SignUp = () => {
         <Input type={"password"} value={cpassword} onchange={(e)=>setCpassword(e.target.value)} placeholder={"Confirm Password"} />
 
         <button
-
+          onClick={handleSignUp}
           type="button"
           className="bg-primary-100 border-none rounded-xl font-semibold font-poppins w-44 px-2 py-2 mt-5"
         >
-          Login
+          Sign Up
         </button>
         </div>
       </div>
