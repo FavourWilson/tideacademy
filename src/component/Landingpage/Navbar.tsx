@@ -41,6 +41,7 @@ const Navbar = () => {
             <NavLink to={''}>WHy Join Us</NavLink>
             <NavLink to={''}>Testimonials</NavLink>
             <NavLink to={''}>FAQ</NavLink>
+            <NavLink to={'/sign-in'} className={'rounded-tl-xl rounded-br-xl bg-primary-100 font-bold font-poppins w-40 text-center py-3 px-2'}>Get Started</NavLink>
         </div>
 
         </div>
