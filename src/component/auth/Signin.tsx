@@ -1,4 +1,4 @@
-import { NavLink } from "react-router" // Corrected import for React Router
+import { NavLink, useNavigate } from "react-router" // Corrected import for React Router
 import { Logo } from "../../assets"
 import Input from "../Input"
 import { useState, type ChangeEvent, type MouseEvent, } from "react"
@@ -7,9 +7,11 @@ const Signin = () => {
   const [email, setEmail] = useState<string>("")
   const [password, setPassword] = useState<string>("")
 
+  const navigate = useNavigate() // Added useNavigate for navigation after login
+
   const handleLogin = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
-    // Add your login logic here
+    navigate("/dashboard")
   }
 
   const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
