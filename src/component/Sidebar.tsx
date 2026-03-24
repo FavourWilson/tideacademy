@@ -8,7 +8,7 @@ type SideBarProps = {
 const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }: SideBarProps) => {
 
     const menuItems = [
-    { icon: Home, label: "Dashboard", active: true },
+    { icon: Home, label: "Dashboard", link:'/dashboard', active: true },
     { icon: BookOpen, label: "My Courses", link: "/my-course" },
     { icon: Award, label: "Certification", link: "/certificate" },
     { icon: Layers, label: "Courses", link: "/courses" },

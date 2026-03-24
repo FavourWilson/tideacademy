@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   BookOpen,
   Bell,
@@ -6,66 +6,90 @@ import {
   Calendar,
   Target,
 } from "lucide-react";
+import { useNavigate } from "react-router";
 import Sidebar from "../../component/Sidebar";
-
-interface Course {
-  id: number;
+import { getMyEnrollments } from "../../services/enrollmentService";
+import { useAuthStore } from "../../store/authStore";
+interface CourseItem {
+  id: string;
   title: string;
   description: string;
+  slug: string;
   status: "in-progress" | "completed";
   objectives?: string;
   completionDate?: string;
+  progress?: number;
 }
 
 const MyCourses: React.FC = () => {
   const [activeView, setActiveView] =
     useState<"in-progress" | "completed">("in-progress");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [courses, setCourses] = useState<CourseItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const currentUser = useAuthStore((state) => state.user);
+    const token = useAuthStore((state) => state.token);
+  const navigate = useNavigate();
 
-  const courses: Course[] = [
-    {
-      id: 1,
-      title: "Demystifying Digital Assets",
-      description:
-        "Objectives - Estimated Completion: January 2025\nDigital blockchain lesson, Ethereum, and altcoins",
-      status: "in-progress",
-      objectives: "Estimated Completion: January 2025",
-    },
-    {
-      id: 2,
-      title: "Demystifying Digital Assets",
-      description:
-        "Transforming how we exchange in blockchain tokens thoughtful and understanding market crypto dynamics like why crypto won't go to zero",
-      status: "completed",
-      completionDate: "Completed: December 2024",
-    },
-    {
-      id: 3,
-      title: "Introduction to Blockchain Technology",
-      description:
-        "Objectives - Estimated Completion: February 2025\nUnderstanding the fundamentals of blockchain, distributed ledgers, and consensus mechanisms",
-      status: "in-progress",
-      objectives: "Estimated Completion: February 2025",
-    },
-    {
-      id: 4,
-      title: "Cryptocurrency Trading Fundamentals",
-      description:
-        "Master the basics of cryptocurrency trading, market analysis, and risk management strategies",
-      status: "completed",
-      completionDate: "Completed: November 2024",
-    },
-  ];
+  useEffect(() => {
+  const fetchEnrollments = async () => {
+    try {
+      if (!token) {
+        navigate("/sign-in");
+        return;
+      }
 
+      setLoading(true);
 
+      const response = await getMyEnrollments();
 
-  const filteredCourses = courses.filter(
-    (course) => course.status === activeView
-  );
+      const mappedCourses: CourseItem[] = (response?.data || []).map(
+        (enrollment: any) => {
+          const course =
+            typeof enrollment.course === "string" ? null : enrollment.course;
+
+          const isCompleted = enrollment.status === "completed";
+
+          return {
+            id: course?._id || enrollment._id,
+            title: course?.title || "Untitled Course",
+            description:
+              course?.description ||
+              "Course details will appear here once available.",
+            slug: course?.slug || "",
+            status: isCompleted ? "completed" : "in-progress",
+            objectives: isCompleted
+              ? undefined
+              : `Progress: ${enrollment.progress || 0}%`,
+            completionDate:
+              isCompleted && enrollment.completedAt
+                ? `Completed: ${new Date(
+                    enrollment.completedAt
+                  ).toLocaleDateString()}`
+                : undefined,
+            progress: enrollment.progress || 0,
+          };
+        }
+      );
+
+      setCourses(mappedCourses);
+    } catch (error) {
+      console.error("Failed to fetch my courses:", error);
+      setCourses([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchEnrollments();
+}, [token, navigate]);
+
+  const filteredCourses = useMemo(() => {
+    return courses.filter((course) => course.status === activeView);
+  }, [courses, activeView]);
 
   return (
     <div className="flex h-screen font-outfit bg-linear-to-br from-slate-50 via-white to-slate-100 overflow-hidden">
-      {/* Overlay */}
       {isSidebarOpen && (
         <div
           onClick={() => setIsSidebarOpen(false)}
@@ -73,12 +97,12 @@ const MyCourses: React.FC = () => {
         />
       )}
 
-      {/* Sidebar */}
-        <Sidebar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
+      <Sidebar
+        isSidebarOpen={isSidebarOpen}
+        setIsSidebarOpen={setIsSidebarOpen}
+      />
 
-      {/* Main */}
       <main className="flex-1 overflow-auto p-6 animate-fadeIn">
-        {/* Header */}
         <header className="flex justify-between items-center mb-8">
           <div className="flex items-center gap-4">
             <button
@@ -88,7 +112,7 @@ const MyCourses: React.FC = () => {
               <Menu />
             </button>
             <h2 className="text-3xl font-bold text-gray-800">
-              Welcome John,
+              Welcome {currentUser?.fullname || "User"},
             </h2>
           </div>
 
@@ -97,7 +121,6 @@ const MyCourses: React.FC = () => {
           </button>
         </header>
 
-        {/* Toggle */}
         <div className="flex gap-4 mb-8">
           {["in-progress", "completed"].map((view) => (
             <button
@@ -105,8 +128,7 @@ const MyCourses: React.FC = () => {
               onClick={() =>
                 setActiveView(view as "in-progress" | "completed")
               }
-              className={`px-8 py-3 rounded-full font-semibold transition
-              ${
+              className={`px-8 py-3 rounded-full font-semibold transition ${
                 activeView === view
                   ? "bg-primary-200 text-white shadow-lg"
                   : "bg-primary-200 border-2 border-gray-200 text-white hover:border-brand-500 hover:text-brand-500"
@@ -117,9 +139,12 @@ const MyCourses: React.FC = () => {
           ))}
         </div>
 
-        {/* Courses */}
         <div className="space-y-5">
-          {filteredCourses.length === 0 ? (
+          {loading ? (
+            <div className="bg-white rounded-2xl shadow-xl p-12 text-center">
+              <h3 className="text-xl font-bold mb-2">Loading your courses...</h3>
+            </div>
+          ) : filteredCourses.length === 0 ? (
             <div className="bg-white rounded-2xl shadow-xl p-12 text-center">
               <BookOpen className="mx-auto mb-4 text-gray-400" size={40} />
               <h3 className="text-xl font-bold mb-2">
@@ -127,7 +152,7 @@ const MyCourses: React.FC = () => {
               </h3>
               <p className="text-gray-500">
                 {activeView === "in-progress"
-                  ? "Start a new course to see it here!"
+                  ? "Enroll in a course to see it here!"
                   : "Complete a course to see it here!"}
               </p>
             </div>
@@ -140,9 +165,7 @@ const MyCourses: React.FC = () => {
               >
                 <div className="flex flex-col sm:flex-row justify-between gap-6">
                   <div className="flex-1">
-                    <h3 className="text-xl font-bold mb-3">
-                      {course.title}
-                    </h3>
+                    <h3 className="text-xl font-bold mb-3">{course.title}</h3>
 
                     {activeView === "in-progress" ? (
                       <>
@@ -156,7 +179,7 @@ const MyCourses: React.FC = () => {
                           </span>
                         </div>
                         <p className="text-sm text-gray-600 ml-6">
-                          {course.description.split("\n")[1]}
+                          {course.description}
                         </p>
                       </>
                     ) : (
@@ -177,8 +200,12 @@ const MyCourses: React.FC = () => {
                   </div>
 
                   <button
-                    className="px-8 py-3 lg:w-64 rounded-full font-semibold text-white
-                    bg-primary-900 shadow-lg hover:shadow-xl whitespace-nowrap"
+                    onClick={() =>
+                      activeView === "in-progress"
+                        ? navigate(`/courses/${course.slug}`)
+                        : navigate(`/certificate/course/${course.id}`)
+                    }
+                    className="px-8 py-3 lg:w-64 rounded-full font-semibold text-white bg-primary-900 shadow-lg hover:shadow-xl whitespace-nowrap"
                   >
                     {activeView === "in-progress"
                       ? "Continue"
