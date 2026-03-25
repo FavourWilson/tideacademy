@@ -19,7 +19,6 @@ const Certification: React.FC = () => {
   const [error, setError] = useState("");
 
   const { certificateId, courseId } = useParams();
-  const navigate = useNavigate();
   const user = useAuthStore((state) => state.user);
   const certificateRef = useRef<HTMLDivElement | null>(null);
 
