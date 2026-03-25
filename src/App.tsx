@@ -14,6 +14,13 @@ import ProtectedRoute from "./component/ProtectedRoute";
 import CourseDetails from "./pages/dashboard/CourseDetails";
 import LessonViewer from "./pages/dashboard/LessonViewer";
 import { useAuthStore } from "./store/authStore";
+import AdminRoute from "./component/AdminRoute";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminUsers from "./pages/admin/AdminUsers";
+import AdminCourses from "./pages/admin/AdminCourses";
+import AdminLessons from "./pages/admin/AdminLessons";
+import AdminEnrollments from "./pages/admin/AdminEnrollment";
+import AdminCertificates from "./pages/admin/AdminCertificate";
 
 function App() {
   const hydrateAuth = useAuthStore((state) => state.hydrateAuth);
@@ -47,6 +54,14 @@ function App() {
         <Route path="/profile" element={<Profile />} />
       </Route>
 
+       <Route element={<AdminRoute />}>
+        <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/admin/users" element={<AdminUsers />} />
+        <Route path="/admin/courses" element={<AdminCourses />} />
+        <Route path="/admin/courses/:slug/lessons" element={<AdminLessons />} />
+        <Route path="/admin/enrollments" element={<AdminEnrollments />} />
+        <Route path="/admin/certificates" element={<AdminCertificates />} />
+      </Route>
       <Route path="*" element={<h1>404 Not Found</h1>} />
     </Routes>
   );
