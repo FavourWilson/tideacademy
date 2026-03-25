@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Bell, Menu, Download } from "lucide-react";
-import { useNavigate, useParams } from "react-router";
+import { useParams } from "react-router";
 import Sidebar from "../../component/Sidebar";
 import { useAuthStore } from "../../store/authStore";
 import {
