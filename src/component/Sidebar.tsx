@@ -1,5 +1,8 @@
 import { Award, BookOpen, Home, Layers, User, LogOut, X } from "lucide-react";
 import { Link } from "react-router";
+import { useNavigate } from "react-router";
+import { useAuthStore } from "../store/authStore";
+
 
 type SideBarProps = {
   isSidebarOpen: boolean;
@@ -15,6 +18,13 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }: SideBarProps) => {
     { icon: User, label: "Profile", link: "/profile" },
   ];
 
+  const logout = useAuthStore((state) => state.logout);
+const navigate = useNavigate();
+
+const handleLogout = () => {
+  logout(); // clears token + user
+  navigate("/sign-in"); // redirect
+};
   return (
       <aside
         className={`fixed lg:static inset-y-0 left-0 z-50 w-64 text-white
@@ -64,7 +74,7 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }: SideBarProps) => {
 
         {/* Logout */}
         <div className="p-4 border-t border-white/10">
-          <div className="flex items-center gap-3 px-4 py-3 rounded-lg cursor-pointer text-white/70 hover:bg-white/10 hover:text-white">
+          <div onClick={handleLogout} className="flex items-center gap-3 px-4 py-3 rounded-lg cursor-pointer text-white/70 hover:bg-white/10 hover:text-white">
             <LogOut size={18} />
             Logout
           </div>
